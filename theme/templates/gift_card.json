@@ -1,6 +1,0 @@
-{
-  "sections": {
-    "gift-card": { "type": "gift-card", "disabled": false, "settings": {} }
-  },
-  "order": ["gift-card"]
-}
