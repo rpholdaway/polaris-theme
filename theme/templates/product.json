@@ -4,41 +4,13 @@
       "type": "announcement-bar",
       "settings": {}
     },
-    "header": {
-      "type": "header",
-      "settings": {}
-    },
     "main-product": {
       "type": "main-product",
-      "blocks": {
-        "title": {
-          "type": "title",
-          "settings": {}
-        },
-        "price": {
-          "type": "price",
-          "settings": {}
-        },
-        "quantity-selector": {
-          "type": "quantity-selector",
-          "settings": {}
-        },
-        "buy-buttons": {
-          "type": "buy-buttons",
-          "settings": {}
-        },
-        "description": {
-          "type": "description",
-          "settings": {}
-        }
-      },
-      "block_order": ["title", "price", "quantity-selector", "buy-buttons", "description"],
-      "settings": {}
-    },
-    "footer": {
-      "type": "footer",
       "settings": {}
     }
   },
-  "order": ["announcement-bar", "header", "main-product", "footer"]
+  "order": [
+    "announcement-bar",
+    "main-product"
+  ]
 }

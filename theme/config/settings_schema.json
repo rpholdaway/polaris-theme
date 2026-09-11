@@ -15,9 +15,18 @@
         "id": "color_preset",
         "label": "Color Preset",
         "options": [
-          { "value": "overland", "label": "Overland" },
-          { "value": "alpine", "label": "Alpine" },
-          { "value": "coastal", "label": "Coastal" }
+          {
+            "value": "overland",
+            "label": "Overland"
+          },
+          {
+            "value": "alpine",
+            "label": "Alpine"
+          },
+          {
+            "value": "coastal",
+            "label": "Coastal"
+          }
         ],
         "default": "overland"
       },
@@ -54,7 +63,7 @@
         "type": "font_picker",
         "id": "font_heading",
         "label": "Heading Font",
-        "default": "special_gothic_condensed_one_n4"
+        "default": "inter_n4"
       },
       {
         "type": "font_picker",

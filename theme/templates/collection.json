@@ -4,10 +4,6 @@
       "type": "announcement-bar",
       "settings": {}
     },
-    "header": {
-      "type": "header",
-      "settings": {}
-    },
     "collection-banner": {
       "type": "collection-banner",
       "settings": {
@@ -20,11 +16,11 @@
         "products_per_page": 24,
         "columns_desktop": 4
       }
-    },
-    "footer": {
-      "type": "footer",
-      "settings": {}
     }
   },
-  "order": ["announcement-bar", "header", "collection-banner", "main-collection", "footer"]
+  "order": [
+    "announcement-bar",
+    "collection-banner",
+    "main-collection"
+  ]
 }
