@@ -1,16 +1,11 @@
 {
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "disabled": false
-    },
     "main-search": {
       "type": "main-search",
       "disabled": false
     }
   },
   "order": [
-    "announcement-bar",
     "main-search"
   ]
 }

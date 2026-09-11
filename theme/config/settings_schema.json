@@ -63,7 +63,7 @@
         "type": "font_picker",
         "id": "font_heading",
         "label": "Heading Font",
-        "default": "inter_n4"
+        "default": "oswald_n4"
       },
       {
         "type": "font_picker",

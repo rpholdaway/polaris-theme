@@ -1,9 +1,5 @@
 {
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "settings": {}
-    },
     "collection-banner": {
       "type": "collection-banner",
       "settings": {
@@ -19,7 +15,6 @@
     }
   },
   "order": [
-    "announcement-bar",
     "collection-banner",
     "main-collection"
   ]

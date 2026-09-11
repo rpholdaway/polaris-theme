@@ -1,9 +1,5 @@
 {
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "settings": {}
-    },
     "hero": {
       "type": "hero",
       "disabled": false,
@@ -49,7 +45,6 @@
     }
   },
   "order": [
-    "announcement-bar",
     "hero",
     "category-grid",
     "featured-collection",
