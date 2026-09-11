@@ -1,0 +1,64 @@
+{%- comment -%} sections/main-search.liquid {%- endcomment -%}
+<section class="bg-snow px-4 py-16" data-section-id="{{ section.id }}" data-section-type="search">
+  <div class="max-w-7xl mx-auto">
+    <div class="max-w-2xl mx-auto text-center mb-12">
+      <h1 class="font-display text-3xl md:text-5xl uppercase tracking-widest text-night mb-6">{{ 'templates.search.title' | t }}</h1>
+      <form action="{{ routes.search_url }}" method="get" role="search" class="flex items-stretch gap-2">
+        <input type="hidden" name="type" value="product">
+        <label for="SearchTerms" class="sr-only">{{ 'general.search.placeholder' | t }}</label>
+        <input
+          id="SearchTerms"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'general.search.placeholder' | t }}"
+          class="flex-1 rounded-md border border-stone/40 bg-white px-4 py-3 font-body text-sm text-night placeholder:text-stone focus:outline-none focus:ring-2 focus:ring-forest"
+        >
+        <button type="submit" class="rounded-md bg-forest px-6 py-3 font-body text-sm font-medium text-snow transition-colors hover:bg-moss">
+          {{ 'general.search.submit' | t }}
+        </button>
+      </form>
+    </div>
+
+    {%- if search.performed -%}
+      {%- paginate search.results by section.settings.results_per_page -%}
+        {%- if search.results.size > 0 -%}
+          <p class="font-mono text-xs uppercase tracking-widest text-stone mb-6 text-center">{{ 'templates.search.results_with_count' | t: count: search.results_count }}</p>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8" data-gsap="stagger-fade">
+            {%- for item in search.results -%}
+              <div class="group" data-gsap-item data-product-card>
+                <a href="{{ item.url }}" class="block">
+                  <div class="relative aspect-[4/5] overflow-hidden rounded-lg bg-wheat transition-transform duration-300 group-hover:-translate-y-0.5">
+                    {%- if item.featured_media -%}
+                      {{ item.featured_media | image_url: width: 800 | image_tag: width: 800, height: 1000, class: 'w-full h-full object-cover', loading: 'lazy', widths: '400,600,800' }}
+                    {%- endif -%}
+                  </div>
+                  <h2 class="font-body text-sm text-night mt-3 group-hover:text-forest transition-colors">{{ item.title }}</h2>
+                  {%- if item.price -%}<p class="font-mono text-sm text-bark mt-1">{{ item.price | money }}</p>{%- endif -%}
+                </a>
+              </div>
+            {%- endfor -%}
+          </div>
+          {%- if paginate.pages > 1 -%}
+            <nav class="mt-14 flex items-center justify-center gap-4" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+              {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" class="font-body text-sm text-forest underline underline-offset-4 hover:text-moss">{{ 'general.pagination.previous' | t }}</a>{%- endif -%}
+              <span class="font-mono text-xs text-stone">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+              {%- if paginate.next -%}<a href="{{ paginate.next.url }}" class="font-body text-sm text-forest underline underline-offset-4 hover:text-moss">{{ 'general.pagination.next' | t }}</a>{%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- else -%}
+          <p class="font-body text-base text-bark text-center">{{ 'templates.search.no_results' | t: terms: search.terms }}</p>
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search Results",
+  "settings": [
+    { "type": "range", "id": "results_per_page", "label": "Results per page", "min": 8, "max": 48, "step": 4, "default": 24 }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,55 @@
+{%- comment -%} sections/main-register.liquid {%- endcomment -%}
+<section class="min-h-[70vh] bg-snow px-4 py-16 flex items-center justify-center" data-section-id="{{ section.id }}" data-section-type="register">
+  <div class="max-w-md w-full rounded-2xl border border-stone/30 bg-white p-8 md:p-10" data-gsap="fade-up">
+    <h1 class="font-display text-2xl md:text-3xl uppercase tracking-widest text-night mb-8 text-center">{{ 'customer.register.title' | t }}</h1>
+
+    {%- form 'create_customer', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}
+        <div class="rounded-md bg-fire/10 border border-fire/30 px-4 py-3 mb-6" role="alert">
+          <ul class="font-body text-sm text-fire list-disc list-inside">
+            {%- for field in form.errors -%}
+              <li>{{ form.errors.messages[field] }}</li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div>
+          <label for="RegisterFirstName" class="block font-body text-xs uppercase tracking-widest text-stone mb-2">{{ 'customer.register.first_name' | t }}</label>
+          <input type="text" name="customer[first_name]" id="RegisterFirstName" autocomplete="given-name" class="w-full rounded-md border border-stone/40 bg-white px-4 py-3 font-body text-sm text-night focus:outline-none focus:ring-2 focus:ring-forest">
+        </div>
+        <div>
+          <label for="RegisterLastName" class="block font-body text-xs uppercase tracking-widest text-stone mb-2">{{ 'customer.register.last_name' | t }}</label>
+          <input type="text" name="customer[last_name]" id="RegisterLastName" autocomplete="family-name" class="w-full rounded-md border border-stone/40 bg-white px-4 py-3 font-body text-sm text-night focus:outline-none focus:ring-2 focus:ring-forest">
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="RegisterEmail" class="block font-body text-xs uppercase tracking-widest text-stone mb-2">{{ 'customer.register.email' | t }}</label>
+        <input type="email" name="customer[email]" id="RegisterEmail" autocomplete="email" autocorrect="off" autocapitalize="off" required class="w-full rounded-md border border-stone/40 bg-white px-4 py-3 font-body text-sm text-night focus:outline-none focus:ring-2 focus:ring-forest">
+      </div>
+
+      <div class="mb-6">
+        <label for="RegisterPassword" class="block font-body text-xs uppercase tracking-widest text-stone mb-2">{{ 'customer.register.password' | t }}</label>
+        <input type="password" name="customer[password]" id="RegisterPassword" autocomplete="new-password" required class="w-full rounded-md border border-stone/40 bg-white px-4 py-3 font-body text-sm text-night focus:outline-none focus:ring-2 focus:ring-forest">
+      </div>
+
+      <button type="submit" class="w-full rounded-md bg-forest px-6 py-3 font-body text-sm font-medium text-snow transition-colors hover:bg-moss">{{ 'customer.register.submit' | t }}</button>
+    {%- endform -%}
+
+    <div class="mt-8 text-center border-t border-stone/20 pt-6">
+      <p class="font-body text-sm text-bark">
+        {{ 'customer.register.already_have_account' | t }}
+        <a href="{{ routes.account_login_url }}" class="text-forest underline underline-offset-4 hover:text-moss">{{ 'customer.register.sign_in' | t }}</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Register",
+  "settings": []
+}
+{% endschema %}

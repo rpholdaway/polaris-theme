@@ -1,0 +1,35 @@
+{%- comment -%} sections/main-404.liquid {%- endcomment -%}
+<section class="min-h-[70vh] flex items-center justify-center bg-snow px-4 py-32" data-section-id="{{ section.id }}" data-section-type="404">
+  <div class="max-w-xl w-full text-center" data-gsap="fade-up">
+    <p class="font-mono text-sm uppercase tracking-widest text-stone mb-4">{{ 'templates.404.error_code' | t }}</p>
+    <h1 class="font-display text-4xl md:text-6xl uppercase tracking-widest text-night mb-6">{{ 'templates.404.title' | t }}</h1>
+    <p class="font-body text-base leading-relaxed text-bark mb-10">{{ 'templates.404.subtext' | t }}</p>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="flex items-stretch gap-2 mb-10">
+      <input type="hidden" name="type" value="product">
+      <label for="NotFoundSearch" class="sr-only">{{ 'general.search.placeholder' | t }}</label>
+      <input
+        id="NotFoundSearch"
+        type="search"
+        name="q"
+        value=""
+        placeholder="{{ 'general.search.placeholder' | t }}"
+        class="flex-1 rounded-md border border-stone/40 bg-white px-4 py-3 font-body text-sm text-night placeholder:text-stone focus:outline-none focus:ring-2 focus:ring-forest"
+      >
+      <button type="submit" class="rounded-md bg-forest px-6 py-3 font-body text-sm font-medium text-snow transition-colors hover:bg-moss">
+        {{ 'general.search.submit' | t }}
+      </button>
+    </form>
+
+    <a href="{{ routes.root_url }}" class="inline-flex items-center gap-2 font-body text-sm font-medium text-forest underline underline-offset-4 transition-colors hover:text-moss">
+      <span aria-hidden="true">&larr;</span>{{ 'templates.404.back_to_shop' | t }}
+    </a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "404 Page",
+  "settings": []
+}
+{% endschema %}

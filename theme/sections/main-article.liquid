@@ -1,0 +1,49 @@
+{%- comment -%} sections/main-article.liquid {%- endcomment -%}
+<article class="bg-snow" data-section-id="{{ section.id }}" data-section-type="article">
+  {%- if article.image and section.settings.show_featured_image -%}
+    <div class="relative w-full overflow-hidden rounded-lg mx-auto max-w-6xl mt-8 px-4" data-gsap="fade-up">
+      {{ article.image | image_url: width: 1600 | image_tag: width: 1600, height: 900, class: 'w-full h-[40vh] md:h-[56vh] object-cover rounded-lg', loading: 'eager', widths: '750,1100,1600' }}
+    </div>
+  {%- endif -%}
+
+  <header class="max-w-3xl mx-auto px-4 pt-12 pb-8 text-center">
+    {%- if section.settings.show_tags and article.tags.size > 0 -%}
+      <p class="font-mono text-xs uppercase tracking-widest text-clay mb-3">{{ article.tags | join: ' / ' }}</p>
+    {%- endif -%}
+    <h1 class="font-display text-3xl md:text-5xl uppercase tracking-widest text-night mb-4">{{ article.title }}</h1>
+    <p class="font-body text-sm text-bark">
+      <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>
+      {%- if article.author -%}<span class="mx-2 text-stone">&middot;</span>{{ 'blogs.article.by_author' | t: author: article.author }}{%- endif -%}
+    </p>
+  </header>
+
+  <div class="prose prose-neutral max-w-3xl mx-auto px-4 pb-12 font-serif text-night prose-headings:font-display prose-headings:uppercase prose-headings:tracking-widest prose-a:text-forest">
+    {{ article.content }}
+  </div>
+
+  <div class="max-w-3xl mx-auto px-4 pb-16 flex flex-wrap items-center justify-between gap-4 border-t border-stone/30 pt-8">
+    {%- if section.settings.show_share -%}
+      <div class="flex items-center gap-3" data-share>
+        <span class="font-body text-xs uppercase tracking-widest text-stone">{{ 'blogs.article.share' | t }}</span>
+        {%- assign share_url = article.url | prepend: request.origin -%}
+        <a class="text-bark hover:text-forest transition-colors" href="https://www.facebook.com/sharer.php?u={{ share_url | url_encode }}" target="_blank" rel="noopener">{{ 'blogs.article.share_on_facebook' | t }}</a>
+        <a class="text-bark hover:text-forest transition-colors" href="https://x.com/share?url={{ share_url | url_encode }}&text={{ article.title | url_encode }}" target="_blank" rel="noopener">{{ 'blogs.article.share_on_twitter' | t }}</a>
+        <a class="text-bark hover:text-forest transition-colors" href="mailto:?subject={{ article.title | url_encode }}&body={{ share_url | url_encode }}">{{ 'blogs.article.share_on_email' | t }}</a>
+      </div>
+    {%- endif -%}
+    <a href="{{ blog.url }}" class="font-body text-sm font-medium text-forest underline underline-offset-4 hover:text-moss transition-colors">
+      <span aria-hidden="true">&larr;</span> {{ 'blogs.article.back_to_blog' | t: title: blog.title }}
+    </a>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Blog Article",
+  "settings": [
+    { "type": "checkbox", "id": "show_featured_image", "label": "Show featured image", "default": true },
+    { "type": "checkbox", "id": "show_tags", "label": "Show tags", "default": true },
+    { "type": "checkbox", "id": "show_share", "label": "Show share buttons", "default": true }
+  ]
+}
+{% endschema %}

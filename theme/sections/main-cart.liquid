@@ -1,0 +1,77 @@
+
+
+<section class="max-w-5xl mx-auto px-4 md:px-8 py-8 md:py-14">
+  <h1 class="font-display text-3xl md:text-4xl text-night mb-8">Your Cart</h1>
+
+  {% if cart.item_count == 0 %}
+    <div class="flex flex-col items-center gap-5 py-20 text-center">
+      <p class="font-body text-lg text-bark">Your cart is empty</p>
+      <a href="{{ routes.all_products_collection_url }}" class="bg-forest hover:bg-forest/90 text-snow font-body uppercase tracking-wide px-6 py-3 rounded-sm transition-colors">Continue Shopping</a>
+    </div>
+  {% else %}
+    <form action="{{ routes.cart_url }}" method="post" novalidate data-cart-form class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+      <div class="lg:col-span-2 flex flex-col divide-y divide-stone/30">
+        {% for item in cart.items %}
+          <div data-cart-reveal class="flex gap-4 py-5">
+            <a href="{{ item.url }}" class="shrink-0">
+              {% if item.image %}
+                {{ item.image | image_url: width: 160 | image_tag: width: 80, height: 80, class: 'w-20 h-20 object-cover rounded-sm bg-wheat' }}
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'w-20 h-20 object-cover rounded-sm bg-wheat' }}
+              {% endif %}
+            </a>
+            <div class="flex-1 flex flex-col gap-2">
+              <div class="flex justify-between gap-3">
+                <div>
+                  <a href="{{ item.url }}" class="font-body text-night hover:text-forest">{{ item.product.title }}</a>
+                  {% unless item.variant.title == 'Default Title' %}
+                    <p class="font-body text-sm text-bark">{{ item.variant.title }}</p>
+                  {% endunless %}
+                </div>
+                <p class="font-body text-night font-semibold whitespace-nowrap">{{ item.final_line_price | money }}</p>
+              </div>
+              <div class="flex items-center gap-4">
+                {% render 'quantity-selector', input_name: 'updates[]', input_value: item.quantity, item_key: item.key, item_index: forloop.index0 %}
+                <button type="button" data-cart-remove data-line="{{ forloop.index }}" class="font-body text-sm text-fire uppercase tracking-wide">Remove</button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="flex flex-col gap-5 lg:border-l lg:border-stone/30 lg:pl-8">
+        <div class="flex justify-between font-body text-lg">
+          <span class="text-night">Subtotal</span>
+          <span class="text-night font-semibold">{{ cart.total_price | money }}</span>
+        </div>
+        <p class="font-body text-sm text-bark">Taxes and shipping calculated at checkout.</p>
+
+        {% if section.settings.show_shipping_calculator %}
+          <div class="flex flex-col gap-2">
+            <label class="font-body text-sm text-bark uppercase tracking-wide">Estimate shipping</label>
+            <input type="text" placeholder="Enter zip code" class="border border-stone/50 rounded-sm px-3 py-2 font-body bg-snow">
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_cart_note %}
+          <div class="flex flex-col gap-2">
+            <label for="cart-note" class="font-body text-sm text-bark uppercase tracking-wide">Order note</label>
+            <textarea id="cart-note" name="note" rows="3" class="border border-stone/50 rounded-sm px-3 py-2 font-body bg-snow">{{ cart.note }}</textarea>
+          </div>
+        {% endif %}
+
+        <button type="submit" name="checkout" class="w-full bg-forest hover:bg-forest/90 text-snow font-body uppercase tracking-wide py-4 rounded-sm transition-colors">Check Out</button>
+      </div>
+    </form>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Main Cart",
+  "settings": [
+    { "type": "checkbox", "id": "show_cart_note", "label": "Show cart note", "default": true },
+    { "type": "checkbox", "id": "show_shipping_calculator", "label": "Show shipping calculator", "default": false }
+  ]
+}
+{% endschema %}

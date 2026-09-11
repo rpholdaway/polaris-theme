@@ -1,0 +1,106 @@
+
+
+<section class="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-14">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+
+    <div data-pdp-gallery class="flex flex-col gap-4">
+      <div class="relative aspect-square w-full overflow-hidden bg-wheat rounded-sm">
+        {% if product.featured_media %}
+          {{ product.featured_media | image_url: width: 1200 | image_tag: width: 1200, height: 1200, loading: 'eager', class: 'w-full h-full object-cover', data-pdp-main-image: true }}
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
+        {% endif %}
+        {% if section.settings.enable_image_zoom %}
+          <button type="button" data-pdp-zoom-toggle class="absolute bottom-3 right-3 bg-snow/90 text-night text-xs uppercase tracking-wide px-3 py-2 rounded-sm">Zoom</button>
+        {% endif %}
+      </div>
+      {% if product.media.size > 1 %}
+        <div class="hidden md:flex gap-3 overflow-x-auto" data-pdp-thumbs>
+          {% for media in product.media %}
+            <button type="button" data-pdp-thumb data-index="{{ forloop.index0 }}" class="w-20 h-20 shrink-0 overflow-hidden rounded-sm border border-stone/40 {% if forloop.first %}border-forest{% endif %}">
+              {{ media | image_url: width: 160 | image_tag: width: 80, height: 80, class: 'w-full h-full object-cover' }}
+            </button>
+          {% endfor %}
+        </div>
+        <div class="flex md:hidden justify-center gap-2" data-pdp-dots>
+          {% for media in product.media %}
+            <span class="w-1.5 h-1.5 rounded-full {% if forloop.first %}bg-forest{% else %}bg-stone/50{% endif %}"></span>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div data-pdp-sticky class="lg:sticky lg:top-24 lg:self-start flex flex-col gap-5">
+      {% if section.settings.show_vendor and product.vendor %}
+        <p class="font-body text-sm uppercase tracking-wide text-bark">{{ product.vendor }}</p>
+      {% endif %}
+
+      <h1 class="font-display text-3xl md:text-4xl text-night">{{ product.title }}</h1>
+
+      <div class="flex items-center gap-3 font-body text-lg">
+        {% if product.compare_at_price > product.price %}
+          <span class="text-fire font-semibold">{{ product.price | money }}</span>
+          <span class="text-stone line-through">{{ product.compare_at_price | money }}</span>
+          <span class="bg-fire text-snow text-xs uppercase px-2 py-1 rounded-sm">Sale</span>
+        {% else %}
+          <span class="text-night font-semibold">{{ product.price | money }}</span>
+        {% endif %}
+      </div>
+
+      {% form 'product', product, data-pdp-form: true, class: 'flex flex-col gap-5' %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-pdp-variant-id>
+
+        {% unless product.has_only_default_variant %}
+          <div class="flex flex-col gap-4">
+            {% for option in product.options_with_values %}
+              <div class="flex flex-col gap-2">
+                <label class="font-body text-sm text-bark uppercase tracking-wide">{{ option.name }}</label>
+                <select name="options[{{ option.name | escape }}]" class="border border-stone/50 rounded-sm px-3 py-2 font-body bg-snow">
+                  {% for value in option.values %}
+                    <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            {% endfor %}
+          </div>
+        {% endunless %}
+
+        {% if section.settings.show_quantity_selector %}
+          <div class="flex flex-col gap-2">
+            <label class="font-body text-sm text-bark uppercase tracking-wide">Quantity</label>
+            {% render 'quantity-selector', input_name: 'quantity', input_value: 1 %}
+          </div>
+        {% endif %}
+
+        <button type="submit" name="add" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %} class="w-full bg-forest hover:bg-forest/90 disabled:bg-stone disabled:cursor-not-allowed text-snow font-body uppercase tracking-wide py-4 rounded-sm transition-colors">
+          {% if product.selected_or_first_available_variant.available %}Add to Cart{% else %}Sold Out{% endif %}
+        </button>
+
+        {{ form | payment_button }}
+      {% endform %}
+
+      <div class="flex flex-col border-t border-stone/30" data-pdp-accordion>
+        <details open class="py-4 border-b border-stone/30">
+          <summary class="font-body uppercase tracking-wide text-sm text-night cursor-pointer">Description</summary>
+          <div class="pt-3 font-serif text-night/80 leading-relaxed">{{ product.description }}</div>
+        </details>
+        <details class="py-4 border-b border-stone/30">
+          <summary class="font-body uppercase tracking-wide text-sm text-night cursor-pointer">Shipping & Returns</summary>
+          <div class="pt-3 font-serif text-night/80 leading-relaxed">Orders ship within 2-3 business days. Free returns within 30 days of delivery.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Product",
+  "settings": [
+    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": true },
+    { "type": "checkbox", "id": "show_quantity_selector", "label": "Show quantity selector", "default": true },
+    { "type": "checkbox", "id": "enable_sticky_cart", "label": "Enable sticky add to cart", "default": true },
+    { "type": "checkbox", "id": "enable_image_zoom", "label": "Enable image zoom", "default": true }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,96 @@
+{%- comment -%}
+  Renders a quantity stepper input.
+  Accepts:
+    - qty: {Number} initial quantity (default: 1)
+    - min: {Number} minimum quantity (default: 1)
+    - max: {Number} maximum quantity (default: product.quantity or 99)
+    - name: {String} input name attribute (default: 'quantity')
+    - id: {String} optional id suffix, defaults to a random-ish value derived from name
+{%- endcomment -%}
+
+{%- liquid
+  assign qty = qty | default: 1
+  assign min = min | default: 1
+  assign max = max | default: 99
+  assign name = name | default: 'quantity'
+  assign field_id = id | default: name
+-%}
+
+<div class="quantity-selector inline-flex border border-slate/20 rounded-lg" data-quantity-selector>
+  <button
+    type="button"
+    class="w-10 h-10 flex items-center justify-center text-slate hover:text-night transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+    aria-label="Decrease quantity"
+    data-quantity-minus
+    {% if qty <= min %}disabled{% endif %}
+  >
+    {%- render 'icon-svg', name: 'minus' -%}
+  </button>
+
+  <input
+    type="number"
+    id="quantity-{{ field_id }}"
+    name="{{ name }}"
+    value="{{ qty }}"
+    min="{{ min }}"
+    max="{{ max }}"
+    inputmode="numeric"
+    aria-label="Quantity"
+    class="w-14 h-10 text-center text-sm font-body font-medium text-night border-x border-slate/20 bg-transparent appearance-none [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+    data-quantity-input
+  >
+
+  <button
+    type="button"
+    class="w-10 h-10 flex items-center justify-center text-slate hover:text-night transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+    aria-label="Increase quantity"
+    data-quantity-plus
+    {% if qty >= max %}disabled{% endif %}
+  >
+    {%- render 'icon-svg', name: 'plus' -%}
+  </button>
+</div>
+
+<script>
+  (function () {
+    document.querySelectorAll('[data-quantity-selector]').forEach((wrapper) => {
+      if (wrapper.dataset.quantityBound) return;
+      wrapper.dataset.quantityBound = 'true';
+
+      const input = wrapper.querySelector('[data-quantity-input]');
+      const minusBtn = wrapper.querySelector('[data-quantity-minus]');
+      const plusBtn = wrapper.querySelector('[data-quantity-plus]');
+
+      const clamp = (value) => {
+        const min = Number(input.min) || 1;
+        const max = Number(input.max) || Infinity;
+        return Math.min(Math.max(value, min), max);
+      };
+
+      const updateButtons = () => {
+        const value = Number(input.value);
+        const min = Number(input.min) || 1;
+        const max = Number(input.max) || Infinity;
+        minusBtn.disabled = value <= min;
+        plusBtn.disabled = value >= max;
+      };
+
+      minusBtn.addEventListener('click', () => {
+        input.value = clamp(Number(input.value) - 1);
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        updateButtons();
+      });
+
+      plusBtn.addEventListener('click', () => {
+        input.value = clamp(Number(input.value) + 1);
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        updateButtons();
+      });
+
+      input.addEventListener('change', () => {
+        input.value = clamp(Number(input.value) || 1);
+        updateButtons();
+      });
+    });
+  })();
+</script>

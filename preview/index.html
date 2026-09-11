@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polaris — Outdoor &amp; Overland Theme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Special+Gothic+Condensed+One&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        forest: '#323C32', earth: '#B43C32', night: '#1A1A1A',
+        slate: '#7D786E', sand: '#E7E6DD', snow: '#F7F7F7',
+        teal: '#2D4650', sage: '#C3D6AE', white: '#FFFFFF',
+      },
+      fontFamily: {
+        display: ['"Special Gothic Condensed One"', 'sans-serif'],
+        body: ['Geist', 'sans-serif'],
+      },
+      fontSize: {
+        'display-xl': ['4rem', { lineHeight: '1', fontWeight: '400' }],
+        'display-lg': ['3rem', { lineHeight: '1.05', fontWeight: '400' }],
+      },
+      spacing: { '18': '4.5rem', '88': '22rem', '128': '32rem' },
+      borderRadius: { 'xs': '2px', 'sm': '4px', 'md': '8px', 'lg': '12px', 'xl': '16px' },
+    }
+  }
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<style>
+  .bg-pattern { background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+  .hero-gradient { background: linear-gradient(180deg, rgba(26,26,26,0) 50%, rgba(26,26,26,0.55) 100%); }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body class="font-body text-night antialiased">
+
+<!-- Announcement Bar -->
+<div class="bg-forest text-white text-center text-xs font-medium tracking-wider uppercase py-3 px-4" data-animate="fade-down">
+  Free shipping on orders over $150 &nbsp;|&nbsp; <a href="#" class="underline underline-offset-2 hover:text-sage transition">Shop now →</a>
+</div>
+
+<!-- Header -->
+<header class="sticky top-0 z-40 bg-white border-b border-slate/20" data-header>
+  <div class="flex items-center justify-between px-4 md:px-8 max-w-[1440px] mx-auto h-18">
+    <button class="md:hidden w-10 h-10 -ml-2 text-night hover:text-earth transition" aria-label="Menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></svg>
+    </button>
+    <a href="#" class="font-display text-2xl uppercase text-forest tracking-tight">POLARIS</a>
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="#" class="text-sm font-medium uppercase tracking-wider text-night hover:text-earth transition">Shop</a>
+      <a href="#" class="text-sm font-medium uppercase tracking-wider text-night hover:text-earth transition">Collections</a>
+      <a href="#" class="text-sm font-medium uppercase tracking-wider text-night hover:text-earth transition">About</a>
+      <a href="#" class="text-sm font-medium uppercase tracking-wider text-night hover:text-earth transition">Journal</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <button class="w-10 h-10 text-night hover:text-earth transition" aria-label="Search"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg></button>
+      <button class="w-10 h-10 text-night hover:text-earth transition" aria-label="Account"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke-linecap="round"/></svg></button>
+      <button class="relative w-10 h-10 text-night hover:text-earth transition" aria-label="Cart">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 7h12l-1 13a2 2 0 01-2 2H9a2 2 0 01-2-2L6 7z" stroke-linejoin="round"/><path d="M9 7a3 3 0 016 0" stroke-linecap="round"/></svg>
+        <span class="absolute -top-1 -right-2 bg-earth text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center">3</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="relative min-h-[90vh] flex items-end bg-forest overflow-hidden" data-section="hero">
+  <div class="absolute inset-0 opacity-60 bg-pattern"></div>
+  <div class="absolute inset-0 hero-gradient z-10"></div>
+  <div class="relative z-20 w-full max-w-[1440px] mx-auto px-4 md:px-8 pb-16 md:pb-24 pt-32" data-animate="hero-content">
+    <p class="text-sage font-body text-sm font-semibold uppercase tracking-[0.2em] mb-4" data-animate="fade-up">Premium Overland Gear</p>
+    <h1 class="text-white font-display text-[clamp(2.5rem,8vw,5rem)] leading-[0.95] mb-6 max-w-3xl" data-animate="fade-up">
+      GEAR THAT<br>GOES FURTHER
+    </h1>
+    <p class="text-white/80 font-body text-lg md:text-xl max-w-lg mb-8" data-animate="fade-up">
+      Purpose-built equipment for the relentless explorer. Every piece tested in the harshest conditions Australia has to offer.
+    </p>
+    <div class="flex flex-wrap gap-4" data-animate="fade-up">
+      <a href="#" class="inline-flex items-center gap-2 bg-earth text-white px-8 py-4 font-body text-sm font-semibold uppercase tracking-wider rounded-sm hover:bg-earth/90 transition active:scale-[0.97]">Shop Collection</a>
+      <a href="#" class="inline-flex items-center gap-2 border-2 border-white/30 text-white px-8 py-4 font-body text-sm font-semibold uppercase tracking-wider rounded-sm hover:border-white hover:bg-white/10 transition active:scale-[0.97]">Our Story</a>
+    </div>
+  </div>
+</section>
+
+<!-- Category Grid -->
+<section class="py-20 md:py-28 bg-snow" data-section="categories">
+  <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+    <p class="text-earth font-body text-xs font-semibold uppercase tracking-[0.2em] mb-3" data-animate="fade-up">Essentials</p>
+    <h2 class="font-display text-display-lg text-night mb-12" data-animate="fade-up">Shop by Category</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      <a href="#" class="group relative aspect-[3/4] bg-slate/20 rounded-lg overflow-hidden" data-animate="scale-reveal">
+        <div class="absolute inset-0 bg-forest/20 group-hover:bg-forest/10 transition-colors z-10"></div>
+        <div class="absolute inset-0 flex items-center justify-center z-20">
+          <span class="font-display text-3xl md:text-4xl text-white drop-shadow-lg group-hover:scale-105 transition-transform">TENTS</span>
+        </div>
+      </a>
+      <a href="#" class="group relative aspect-[3/4] bg-slate/30 rounded-lg overflow-hidden" data-animate="scale-reveal">
+        <div class="absolute inset-0 bg-forest/20 group-hover:bg-forest/10 transition-colors z-10"></div>
+        <div class="absolute inset-0 flex items-center justify-center z-20">
+          <span class="font-display text-3xl md:text-4xl text-white drop-shadow-lg group-hover:scale-105 transition-transform">SWAGS</span>
+        </div>
+      </a>
+      <a href="#" class="group relative aspect-[3/4] bg-slate/40 rounded-lg overflow-hidden" data-animate="scale-reveal">
+        <div class="absolute inset-0 bg-forest/20 group-hover:bg-forest/10 transition-colors z-10"></div>
+        <div class="absolute inset-0 flex items-center justify-center z-20">
+          <span class="font-display text-3xl md:text-4xl text-white drop-shadow-lg group-hover:scale-105 transition-transform">AWNINGS</span>
+        </div>
+      </a>
+      <a href="#" class="group relative aspect-[3/4] bg-slate/50 rounded-lg overflow-hidden" data-animate="scale-reveal">
+        <div class="absolute inset-0 bg-forest/20 group-hover:bg-forest/10 transition-colors z-10"></div>
+        <div class="absolute inset-0 flex items-center justify-center z-20">
+          <span class="font-display text-3xl md:text-4xl text-white drop-shadow-lg group-hover:scale-105 transition-transform">GEAR</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section class="py-20 md:py-28 bg-white" data-section="featured">
+  <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+      <div>
+        <p class="text-earth font-body text-xs font-semibold uppercase tracking-[0.2em] mb-3" data-animate="fade-up">Bestsellers</p>
+        <h2 class="font-display text-display-lg text-night" data-animate="fade-up">Australia's Favourite</h2>
+      </div>
+      <a href="#" class="inline-flex items-center gap-2 text-earth font-body text-sm font-semibold uppercase tracking-wider hover:gap-3 transition-all" data-animate="fade-up">View all <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+      <div class="group" data-animate="fade-up">
+        <div class="relative aspect-[4/5] bg-sand rounded-lg overflow-hidden mb-4">
+          <div class="absolute inset-0 bg-forest/5 group-hover:bg-forest/0 transition-colors"></div>
+          <span class="absolute top-3 left-3 bg-earth text-white text-[10px] font-semibold uppercase px-2 py-1 rounded-xs">Sale</span>
+        </div>
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate mb-1">Overland Pro</p>
+        <h3 class="font-body font-medium text-night text-sm mb-1">Expedition 3P Tent</h3>
+        <p class="text-sm font-semibold"><span class="text-earth">$649</span> <span class="text-slate line-through font-normal ml-2">$799</span></p>
+      </div>
+      <div class="group" data-animate="fade-up">
+        <div class="relative aspect-[4/5] bg-sand rounded-lg overflow-hidden mb-4">
+          <div class="absolute inset-0 bg-forest/5 group-hover:bg-forest/0 transition-colors"></div>
+        </div>
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate mb-1">Overland Pro</p>
+        <h3 class="font-body font-medium text-night text-sm mb-1">King Single Swag</h3>
+        <p class="text-sm font-semibold text-night">$489</p>
+      </div>
+      <div class="group" data-animate="fade-up">
+        <div class="relative aspect-[4/5] bg-sand rounded-lg overflow-hidden mb-4">
+          <div class="absolute inset-0 bg-forest/5 group-hover:bg-forest/0 transition-colors"></div>
+          <span class="absolute top-3 left-3 bg-forest text-white text-[10px] font-semibold uppercase px-2 py-1 rounded-xs">New</span>
+        </div>
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate mb-1">Overland Pro</p>
+        <h3 class="font-body font-medium text-night text-sm mb-1">270° Freestanding Awning</h3>
+        <p class="text-sm font-semibold text-night">$1,249</p>
+      </div>
+      <div class="group hidden lg:block" data-animate="fade-up">
+        <div class="relative aspect-[4/5] bg-sand rounded-lg overflow-hidden mb-4">
+          <div class="absolute inset-0 bg-forest/5 group-hover:bg-forest/0 transition-colors"></div>
+        </div>
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate mb-1">Overland Pro</p>
+        <h3 class="font-body font-medium text-night text-sm mb-1">Recovery Kit — Ultimate</h3>
+        <p class="text-sm font-semibold text-night">$349</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Editorial / About Block -->
+<section class="py-20 md:py-28 bg-sand" data-section="editorial">
+  <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+    <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+      <div class="order-2 md:order-1" data-animate="fade-up">
+        <p class="text-earth font-body text-xs font-semibold uppercase tracking-[0.2em] mb-3">Our Story</p>
+        <h2 class="font-display text-display-lg text-night mb-6">Built for the<br>Australian Outback</h2>
+        <p class="font-body text-slate leading-relaxed mb-6">
+          Every seam, buckle, and pole is engineered to withstand the brutal extremes of Australia's most remote terrain. We don't just test in labs — we test in 45°C heat, torrential downpours, and 80km/h desert winds.
+        </p>
+        <a href="#" class="inline-flex items-center gap-2 bg-forest text-white px-8 py-4 font-body text-sm font-semibold uppercase tracking-wider rounded-sm hover:bg-forest/90 transition active:scale-[0.97]">Learn More</a>
+      </div>
+      <div class="order-1 md:order-2 relative aspect-[4/5] md:aspect-square bg-forest/10 rounded-lg overflow-hidden" data-animate="scale-reveal">
+        <div class="absolute inset-0 bg-forest/10"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Brand Logos -->
+<section class="py-16 md:py-20 bg-white border-y border-slate/10" data-section="brands">
+  <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+    <p class="text-center text-slate font-body text-xs font-semibold uppercase tracking-[0.2em] mb-10" data-animate="fade-up">Trusted by the best</p>
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-8 items-center justify-items-center opacity-50" data-animate="fade-up">
+      <div class="h-8 w-24 bg-slate/20 rounded"></div>
+      <div class="h-8 w-24 bg-slate/20 rounded"></div>
+      <div class="h-8 w-24 bg-slate/20 rounded"></div>
+      <div class="h-8 w-24 bg-slate/20 rounded hidden md:block"></div>
+      <div class="h-8 w-24 bg-slate/20 rounded hidden md:block"></div>
+      <div class="h-8 w-24 bg-slate/20 rounded hidden md:block"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Newsletter -->
+<section class="py-20 md:py-28 bg-forest relative overflow-hidden" data-section="newsletter">
+  <div class="absolute inset-0 opacity-10 bg-pattern"></div>
+  <div class="relative z-10 max-w-[1440px] mx-auto px-4 md:px-8 text-center">
+    <p class="text-sage font-body text-xs font-semibold uppercase tracking-[0.2em] mb-3" data-animate="fade-up">Stay in the loop</p>
+    <h2 class="font-display text-display-lg text-white mb-4" data-animate="fade-up">Join the Expedition</h2>
+    <p class="text-white/70 font-body text-lg max-w-md mx-auto mb-8" data-animate="fade-up">Get first access to new drops, field tests, and subscriber-only deals.</p>
+    <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" data-animate="fade-up">
+      <input type="email" placeholder="Your email" class="flex-1 bg-white/10 border border-white/20 text-white placeholder:text-white/40 px-5 py-4 font-body rounded-sm focus:outline-none focus:border-sage focus:ring-1 focus:ring-sage">
+      <button type="submit" class="bg-earth text-white px-8 py-4 font-body text-sm font-semibold uppercase tracking-wider rounded-sm hover:bg-earth/90 transition active:scale-[0.97]">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-night text-white py-16 md:py-20" data-section="footer">
+  <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16">
+      <div class="col-span-2 md:col-span-1">
+        <a href="#" class="font-display text-2xl uppercase tracking-tight mb-4 block">POLARIS</a>
+        <p class="text-white/50 text-sm leading-relaxed">Premium overland equipment for the modern explorer. Australian owned, globally tested.</p>
+      </div>
+      <div>
+        <h4 class="font-body text-xs font-semibold uppercase tracking-wider mb-4 text-white/60">Shop</h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-sm text-white/40 hover:text-white transition">Tents</a></li>
+          <li><a href="#" class="text-sm text-white/40 hover:text-white transition">Swags</a></li>
+          <li><a href="#" class="text-sm text-white/40 hover:text-white transition">Awnings</a></li>
+          <li><a href="#" class="text-sm text-white/40 hover:text-white transition">All Gear</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-body text-xs font-semibold uppercase tracking-wider mb-4 text-white/60">Support</h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-sm text-white/40 hover:text-white transition">Shipping</a></li>
+          <li><a href="#" class="text-sm text-white/40 hover:text-white transition">Returns</a></li>
+          <li><a href="#" class="text-sm text-white/40 hover:text-white transition">Warranty</a></li>
+          <li><a href="#" class="text-sm text-white/40 hover:text-white transition">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-body text-xs font-semibold uppercase tracking-wider mb-4 text-white/60">Follow</h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-sm text-white/40 hover:text-white transition">Instagram</a></li>
+          <li><a href="#" class="text-sm text-white/40 hover:text-white transition">YouTube</a></li>
+          <li><a href="#" class="text-sm text-white/40 hover:text-white transition">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-white/30 text-xs">&copy; 2026 Polaris. All rights reserved.</p>
+      <div class="flex gap-6">
+        <span class="text-white/20 text-xs">Privacy</span>
+        <span class="text-white/20 text-xs">Terms</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// MatchMedia for responsive animations
+const mm = gsap.matchMedia();
+
+mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+  // Hero parallax
+  gsap.to("[data-section='hero']", {
+    backgroundPosition: "50% 30%",
+    ease: "none",
+    scrollTrigger: {
+      trigger: "[data-section='hero']",
+      start: "top top",
+      end: "bottom top",
+      scrub: true,
+    },
+  });
+});
+
+mm.add("(prefers-reduced-motion: no-preference)", () => {
+  // Hero content entrance
+  gsap.fromTo("[data-animate='hero-content'] > *", {
+    opacity: 0,
+    y: 40,
+  }, {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    stagger: 0.15,
+    ease: "power2.out",
+  });
+
+  // Fade up on scroll
+  gsap.utils.toArray("[data-animate='fade-up']").forEach((el, i) => {
+    gsap.fromTo(el, { opacity: 0, y: 30 }, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      stagger: 0.1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 85%",
+        toggleActions: "play none none none",
+      },
+    });
+  });
+
+  // Scale reveal
+  gsap.utils.toArray("[data-animate='scale-reveal']").forEach((el) => {
+    gsap.fromTo(el, { opacity: 0, scale: 0.95 }, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.7,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 90%",
+        toggleActions: "play none none none",
+      },
+    });
+  });
+});
+</script>
+</body>
+</html>

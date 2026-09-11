@@ -1,0 +1,376 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Polaris — Base
+   Color and font custom properties are emitted by layout/theme.liquid from
+   theme settings, so every value below has a merchant-controlled fallback.
+   ========================================================================== */
+
+@layer base {
+  :root {
+    --color-forest: 50 60 50;
+    --color-primary: 50 60 50;
+    --color-night: 26 26 26;
+    --color-slate: 125 120 110;
+    --color-earth: 180 60 50;
+    --color-sand: 231 230 221;
+    --color-snow: 247 247 247;
+    --color-white: 255 255 255;
+    --color-teal: 45 70 80;
+    --color-sage: 195 214 174;
+    --color-on-forest: 255 255 255;
+    --color-on-earth: 255 255 255;
+    --color-on-night: 255 255 255;
+    --color-on-sand: 26 26 26;
+    --color-on-snow: 26 26 26;
+    --font-display: 'Special Gothic Condensed One';
+    --font-heading: 'Geist';
+    --font-body: 'Geist';
+    --ease-polaris: cubic-bezier(0.23, 1, 0.32, 1);
+    --header-height: 72px;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-white font-body text-body-md text-night antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+    text-wrap: balance;
+  }
+
+  /* Visible focus ring in earth per DESIGN.md accessibility spec. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--color-earth));
+    outline-offset: 2px;
+  }
+
+  /* Only hide the ring for pointer users who never asked for it. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  img {
+    @apply max-w-full;
+  }
+}
+
+/* ==========================================================================
+   Components
+   ========================================================================== */
+
+@layer components {
+  .page-width {
+    @apply mx-auto w-full max-w-page px-md sm:px-lg lg:px-xl;
+  }
+
+  .section-padding {
+    @apply py-3xl lg:py-section;
+  }
+
+  .visually-hidden {
+    @apply absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+  }
+
+  /* --- Buttons ------------------------------------------------------------ */
+
+  .btn {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-sm rounded-sm px-lg py-[14px]
+      text-label-caps uppercase no-underline;
+    transition:
+      background-color 0.2s var(--ease-polaris),
+      color 0.2s var(--ease-polaris),
+      border-color 0.2s var(--ease-polaris),
+      transform 0.15s var(--ease-polaris);
+  }
+
+  .btn:active {
+    transform: scale(0.97);
+  }
+
+  .btn[disabled],
+  .btn[aria-disabled='true'] {
+    @apply cursor-not-allowed opacity-50;
+  }
+
+  .btn[disabled]:active,
+  .btn[aria-disabled='true']:active {
+    transform: none;
+  }
+
+  .btn-primary {
+    @apply btn bg-earth text-on-earth;
+  }
+
+  .btn-primary:hover {
+    background-color: rgb(var(--color-earth) / 0.88);
+  }
+
+  .btn-ghost {
+    @apply btn border border-night bg-transparent text-night;
+  }
+
+  .btn-ghost:hover {
+    @apply border-earth text-earth;
+  }
+
+  .btn-ghost-light {
+    @apply btn border border-white/60 bg-transparent text-white;
+  }
+
+  .btn-ghost-light:hover {
+    @apply border-white bg-white text-night;
+  }
+
+  .btn-full {
+    @apply btn w-full bg-night text-on-night;
+  }
+
+  .btn-full:hover {
+    background-color: rgb(var(--color-night) / 0.85);
+  }
+
+  .link-arrow {
+    @apply inline-flex items-center gap-sm text-label-caps uppercase text-earth no-underline;
+    transition: color 0.2s var(--ease-polaris);
+  }
+
+  .link-arrow svg {
+    transition: transform 0.2s var(--ease-polaris);
+  }
+
+  .link-arrow:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* --- Forms -------------------------------------------------------------- */
+
+  .field {
+    @apply w-full rounded-sm border border-night/20 bg-white px-md py-[12px] text-body-md text-night;
+    transition:
+      border-color 0.2s var(--ease-polaris),
+      box-shadow 0.2s var(--ease-polaris);
+  }
+
+  .field::placeholder {
+    @apply text-slate;
+  }
+
+  .field:focus {
+    @apply border-earth outline-none;
+    box-shadow: 0 0 0 2px rgb(var(--color-earth) / 0.2);
+  }
+
+  .field-label {
+    @apply mb-xs block text-label-sm uppercase text-slate;
+  }
+
+  /* --- Nav ---------------------------------------------------------------- */
+
+  .nav-link {
+    @apply relative inline-block py-sm text-nav-link uppercase tracking-[0.04em] text-night no-underline;
+    transition: color 0.2s var(--ease-polaris);
+  }
+
+  .nav-link::after {
+    @apply absolute bottom-[2px] left-0 h-[2px] w-full origin-left scale-x-0 bg-earth;
+    content: '';
+    transition: transform 0.2s var(--ease-polaris);
+  }
+
+  .nav-link:hover,
+  .nav-link[aria-current='page'] {
+    @apply text-earth;
+  }
+
+  .nav-link:hover::after,
+  .nav-link[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+
+  .nav-link-light {
+    @apply text-white;
+  }
+
+  .nav-link-light:hover {
+    @apply text-white;
+  }
+
+  /* --- Badges ------------------------------------------------------------- */
+
+  .badge {
+    @apply inline-flex items-center rounded-xs px-sm py-[3px] text-label-caps uppercase;
+  }
+
+  .badge-sale {
+    @apply badge bg-earth text-on-earth;
+  }
+
+  .badge-new {
+    @apply badge bg-sage text-forest;
+  }
+
+  .badge-soldout {
+    @apply badge text-white;
+    background-color: rgb(var(--color-night) / 0.8);
+  }
+
+  /* --- Drawers / overlays ------------------------------------------------- */
+
+  .overlay {
+    @apply fixed inset-0 z-overlay opacity-0;
+    background-color: rgb(var(--color-night) / 0.5);
+    visibility: hidden;
+    transition:
+      opacity 0.2s var(--ease-polaris),
+      visibility 0.2s var(--ease-polaris);
+  }
+
+  .overlay[data-open='true'] {
+    @apply opacity-100;
+    visibility: visible;
+  }
+
+  .drawer {
+    @apply fixed bottom-0 top-0 z-drawer flex w-full max-w-[400px] flex-col bg-white shadow-drawer;
+    transition: transform 0.3s var(--ease-polaris);
+  }
+
+  .drawer-right {
+    @apply right-0;
+    transform: translateX(100%);
+  }
+
+  .drawer-left {
+    @apply left-0;
+    transform: translateX(-100%);
+  }
+
+  .drawer[data-open='true'] {
+    transform: translateX(0);
+  }
+
+  /* --- Media -------------------------------------------------------------- */
+
+  .media-zoom img {
+    transition: transform 0.3s var(--ease-polaris);
+  }
+
+  .media-zoom:hover img {
+    transform: scale(1.03);
+  }
+
+  /* Topographic texture used on forest surfaces (hero, footer). */
+  .texture-topo {
+    background-image: repeating-radial-gradient(
+      circle at 20% 30%,
+      rgb(255 255 255 / 0.05) 0,
+      rgb(255 255 255 / 0.05) 1px,
+      transparent 1px,
+      transparent 22px
+    );
+  }
+
+  .rte > * + * {
+    @apply mt-md;
+  }
+
+  .rte a {
+    @apply text-earth underline underline-offset-2;
+  }
+
+  .rte ul {
+    @apply list-disc pl-lg;
+  }
+
+  .rte ol {
+    @apply list-decimal pl-lg;
+  }
+}
+
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .line-clamp-1-safe {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+  }
+
+  .line-clamp-2-safe {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Animation entry states
+   Elements marked for GSAP start hidden only when JS can animate them; the
+   `polaris-motion` class is set on <html> by polaris.js before paint.
+   ========================================================================== */
+
+.polaris-motion [data-animate] {
+  opacity: 0;
+}
+
+.polaris-motion [data-animate='fade-up'],
+.polaris-motion [data-animate='scale-reveal'] {
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .polaris-motion [data-animate] {
+    opacity: 1;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

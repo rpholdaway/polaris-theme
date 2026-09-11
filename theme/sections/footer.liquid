@@ -1,0 +1,276 @@
+<footer class="bg-night text-white pt-20 pb-8">
+  <div class="max-w-[1440px] mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
+
+    {%- comment -%} Column 1: Brand {%- endcomment -%}
+    <div>
+      {%- if section.settings.logo != blank -%}
+        <img
+          src="{{ section.settings.logo | image_url: width: 280 }}"
+          alt="{{ shop.name }}"
+          width="140"
+          height="{{ 140 | divided_by: section.settings.logo.aspect_ratio }}"
+          loading="lazy"
+          class="max-w-[140px] mb-4"
+        >
+      {%- else -%}
+        <p class="font-display text-2xl mb-4">{{ shop.name }}</p>
+      {%- endif -%}
+      {%- if section.settings.about_text != blank -%}
+        <div class="font-body text-sm text-white/60 max-w-xs">
+          {{ section.settings.about_text }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Column 2: Quick Links {%- endcomment -%}
+    <div>
+      <h4 class="font-body text-xs uppercase tracking-wider text-white/40 mb-4">
+        {{ section.settings.menu_quick_title | default: 'Quick Links' }}
+      </h4>
+      {%- if section.settings.menu_quick != blank -%}
+        <nav>
+          <ul class="list-none p-0 m-0">
+            {%- for link in section.settings.menu_quick.links -%}
+              <li>
+                <a
+                  href="{{ link.url }}"
+                  class="block font-body text-sm text-white/60 hover:text-white transition py-1"
+                  {% if link.active %}aria-current="page"{% endif %}
+                >
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Column 3: Customer Service {%- endcomment -%}
+    <div>
+      <h4 class="font-body text-xs uppercase tracking-wider text-white/40 mb-4">
+        {{ section.settings.menu_service_title | default: 'Customer Service' }}
+      </h4>
+      {%- if section.settings.menu_service != blank -%}
+        <nav>
+          <ul class="list-none p-0 m-0">
+            {%- for link in section.settings.menu_service.links -%}
+              <li>
+                <a
+                  href="{{ link.url }}"
+                  class="block font-body text-sm text-white/60 hover:text-white transition py-1"
+                  {% if link.active %}aria-current="page"{% endif %}
+                >
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Column 4: Connect {%- endcomment -%}
+    <div>
+      <h4 class="font-body text-xs uppercase tracking-wider text-white/40 mb-4">
+        {{ section.settings.social_title | default: 'Connect' }}
+      </h4>
+      {%- if section.settings.show_social -%}
+        <div class="flex gap-3">
+          {%- if section.settings.social_instagram != blank -%}
+            <a
+              href="{{ section.settings.social_instagram }}"
+              target="_blank"
+              rel="noopener"
+              aria-label="Instagram"
+              class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-white/30 hover:text-earth transition"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+                <circle cx="12" cy="12" r="4.5"></circle>
+                <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"></circle>
+              </svg>
+            </a>
+          {%- endif -%}
+
+          {%- if section.settings.social_facebook != blank -%}
+            <a
+              href="{{ section.settings.social_facebook }}"
+              target="_blank"
+              rel="noopener"
+              aria-label="Facebook"
+              class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-white/30 hover:text-earth transition"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M15 3h-2a4 4 0 0 0-4 4v3H7v4h2v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h3V3z"></path>
+              </svg>
+            </a>
+          {%- endif -%}
+
+          {%- if section.settings.social_youtube != blank -%}
+            <a
+              href="{{ section.settings.social_youtube }}"
+              target="_blank"
+              rel="noopener"
+              aria-label="YouTube"
+              class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-white/30 hover:text-earth transition"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <rect x="2" y="5" width="20" height="14" rx="4"></rect>
+                <path d="M10 9.5v5l4.5-2.5-4.5-2.5z" fill="currentColor" stroke="none"></path>
+              </svg>
+            </a>
+          {%- endif -%}
+
+          {%- if section.settings.social_tiktok != blank -%}
+            <a
+              href="{{ section.settings.social_tiktok }}"
+              target="_blank"
+              rel="noopener"
+              aria-label="TikTok"
+              class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-white/30 hover:text-earth transition"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M14 3v10.5a3.5 3.5 0 1 1-3.5-3.5"></path>
+                <path d="M14 3a5 5 0 0 0 5 5"></path>
+              </svg>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+  </div>
+
+  <div class="max-w-[1440px] mx-auto px-4 pt-6 mt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 font-body text-sm text-white/40">
+    <p class="m-0">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+
+    {%- if section.settings.show_payment_icons -%}
+      <div class="flex items-center gap-3" aria-label="Accepted payment methods">
+        <svg width="36" height="24" viewBox="0 0 36 24" role="img" aria-label="Visa">
+          <rect width="36" height="24" rx="4" fill="#ffffff1a"></rect>
+          <text x="18" y="16" text-anchor="middle" font-family="Geist, sans-serif" font-size="9" font-weight="700" fill="currentColor">VISA</text>
+        </svg>
+        <svg width="36" height="24" viewBox="0 0 36 24" role="img" aria-label="Mastercard">
+          <rect width="36" height="24" rx="4" fill="#ffffff1a"></rect>
+          <circle cx="15" cy="12" r="6" fill="#EB001B" opacity="0.85"></circle>
+          <circle cx="21" cy="12" r="6" fill="#F79E1B" opacity="0.85"></circle>
+        </svg>
+        <svg width="36" height="24" viewBox="0 0 36 24" role="img" aria-label="American Express">
+          <rect width="36" height="24" rx="4" fill="#ffffff1a"></rect>
+          <text x="18" y="16" text-anchor="middle" font-family="Geist, sans-serif" font-size="7" font-weight="700" fill="currentColor">AMEX</text>
+        </svg>
+        <svg width="36" height="24" viewBox="0 0 36 24" role="img" aria-label="PayPal">
+          <rect width="36" height="24" rx="4" fill="#ffffff1a"></rect>
+          <text x="18" y="16" text-anchor="middle" font-family="Geist, sans-serif" font-size="7" font-weight="700" fill="currentColor">PayPal</text>
+        </svg>
+      </div>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "footer",
+  "class": "section-footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "textarea",
+      "id": "about_text",
+      "label": "About text",
+      "default": "Short description about your store goes here."
+    },
+    {
+      "type": "header",
+      "content": "Quick Links"
+    },
+    {
+      "type": "text",
+      "id": "menu_quick_title",
+      "label": "Quick Links heading",
+      "default": "Quick Links"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_quick",
+      "label": "Quick Links menu"
+    },
+    {
+      "type": "header",
+      "content": "Customer Service"
+    },
+    {
+      "type": "text",
+      "id": "menu_service_title",
+      "label": "Customer Service heading",
+      "default": "Customer Service"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_service",
+      "label": "Customer Service menu"
+    },
+    {
+      "type": "header",
+      "content": "Connect"
+    },
+    {
+      "type": "text",
+      "id": "social_title",
+      "label": "Connect heading",
+      "default": "Connect"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show social icons",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "text",
+      "id": "social_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "text",
+      "id": "social_youtube",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "text",
+      "id": "social_tiktok",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,151 @@
+{
+  "theme": {
+    "extend": {
+      "colors": {
+        "forest": "#323c32",
+        "primary": "#323c32",
+        "night": "#1a1a1a",
+        "slate": "#7d786e",
+        "earth": "#b43c32",
+        "sand": "#e7e6dd",
+        "snow": "#f7f7f7",
+        "white": "#ffffff",
+        "teal": "#2d4650",
+        "sage": "#c3d6ae",
+        "on-forest": "#ffffff",
+        "on-earth": "#ffffff",
+        "on-night": "#ffffff",
+        "on-sand": "#1a1a1a",
+        "on-snow": "#1a1a1a"
+      },
+      "fontFamily": {
+        "display-xl": [
+          "Special Gothic Condensed One"
+        ],
+        "display-lg": [
+          "Special Gothic Condensed One"
+        ],
+        "h1": [
+          "Geist"
+        ],
+        "h2": [
+          "Geist"
+        ],
+        "h3": [
+          "Geist"
+        ],
+        "body-lg": [
+          "Geist"
+        ],
+        "body-md": [
+          "Geist"
+        ],
+        "body-sm": [
+          "Geist"
+        ],
+        "label-caps": [
+          "Geist"
+        ],
+        "label-sm": [
+          "Geist"
+        ],
+        "nav-link": [
+          "Geist"
+        ]
+      },
+      "fontSize": {
+        "display-xl": [
+          "4rem",
+          {
+            "letterSpacing": "-0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "display-lg": [
+          "3rem",
+          {
+            "letterSpacing": "-0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "h1": [
+          "2.5rem",
+          {
+            "letterSpacing": "-0.02em",
+            "fontWeight": "700"
+          }
+        ],
+        "h2": [
+          "1.75rem",
+          {
+            "letterSpacing": "-0.01em",
+            "fontWeight": "600"
+          }
+        ],
+        "h3": [
+          "1.25rem",
+          {
+            "fontWeight": "600"
+          }
+        ],
+        "body-lg": [
+          "1.125rem",
+          {
+            "fontWeight": "400"
+          }
+        ],
+        "body-md": [
+          "1rem",
+          {
+            "fontWeight": "400"
+          }
+        ],
+        "body-sm": [
+          "0.875rem",
+          {
+            "fontWeight": "400"
+          }
+        ],
+        "label-caps": [
+          "0.75rem",
+          {
+            "letterSpacing": "0.08em",
+            "fontWeight": "600"
+          }
+        ],
+        "label-sm": [
+          "0.75rem",
+          {
+            "letterSpacing": "0.04em",
+            "fontWeight": "500"
+          }
+        ],
+        "nav-link": [
+          "0.875rem",
+          {
+            "fontWeight": "500"
+          }
+        ]
+      },
+      "borderRadius": {
+        "xs": "2px",
+        "sm": "4px",
+        "md": "8px",
+        "lg": "12px",
+        "xl": "16px",
+        "full": "9999px"
+      },
+      "spacing": {
+        "xs": "4px",
+        "sm": "8px",
+        "md": "16px",
+        "lg": "24px",
+        "xl": "32px",
+        "2xl": "48px",
+        "3xl": "64px",
+        "4xl": "96px",
+        "section-padding": "80px"
+      }
+    }
+  }
+}

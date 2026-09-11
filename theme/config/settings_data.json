@@ -1,0 +1,18 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "color_preset": "overland",
+      "color_primary": "#323C32",
+      "color_accent": "#B43C32",
+      "color_bg_light": "#F7F7F7",
+      "color_bg_warm": "#E7E6DD",
+      "font_heading": "special_gothic_condensed_one_n4",
+      "font_body": "geist_n4",
+      "enable_sticky_header": true,
+      "logo_width": 150,
+      "show_announcement": true,
+      "enable_predictive_search": true
+    }
+  }
+}

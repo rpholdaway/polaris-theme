@@ -1,0 +1,73 @@
+{%- comment -%} sections/main-account.liquid {%- endcomment -%}
+<section class="bg-snow px-4 py-16" data-section-id="{{ section.id }}" data-section-type="account">
+  <div class="max-w-4xl mx-auto">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-10">
+      <h1 class="font-display text-3xl md:text-5xl uppercase tracking-widest text-night">{{ 'customer.account.title' | t: name: customer.first_name }}</h1>
+      <a href="{{ routes.account_logout_url }}" class="font-body text-sm font-medium text-forest underline underline-offset-4 hover:text-moss transition-colors">{{ 'customer.log_out' | t }}</a>
+    </div>
+
+    <div class="mb-14">
+      <h2 class="font-display text-xl uppercase tracking-widest text-night mb-4">{{ 'customer.orders.title' | t }}</h2>
+      {%- paginate customer.orders by 10 -%}
+        {%- if customer.orders.size > 0 -%}
+          <div class="overflow-x-auto rounded-lg border border-stone/30">
+            <table class="w-full text-left font-body text-sm">
+              <thead class="bg-wheat">
+                <tr>
+                  <th class="px-4 py-3 font-medium text-night uppercase tracking-wide text-xs">{{ 'customer.orders.order_number' | t }}</th>
+                  <th class="px-4 py-3 font-medium text-night uppercase tracking-wide text-xs">{{ 'customer.orders.date' | t }}</th>
+                  <th class="px-4 py-3 font-medium text-night uppercase tracking-wide text-xs">{{ 'customer.orders.payment_status' | t }}</th>
+                  <th class="px-4 py-3 font-medium text-night uppercase tracking-wide text-xs">{{ 'customer.orders.fulfillment_status' | t }}</th>
+                  <th class="px-4 py-3 font-medium text-night uppercase tracking-wide text-xs text-right">{{ 'customer.orders.total' | t }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%- for order in customer.orders -%}
+                  <tr class="border-t border-stone/20 hover:bg-wheat/40 transition-colors">
+                    <td class="px-4 py-3"><a href="{{ order.customer_url }}" class="text-forest hover:text-moss font-medium">{{ order.name }}</a></td>
+                    <td class="px-4 py-3 text-bark">{{ order.created_at | date: format: 'month_day_year' }}</td>
+                    <td class="px-4 py-3 text-bark">{{ order.financial_status_label }}</td>
+                    <td class="px-4 py-3 text-bark">{{ order.fulfillment_status_label }}</td>
+                    <td class="px-4 py-3 text-right font-mono text-night">{{ order.total_price | money }}</td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+          </div>
+          {%- if paginate.pages > 1 -%}
+            <nav class="mt-6 flex items-center justify-center gap-4" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+              {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" class="font-body text-sm text-forest underline underline-offset-4 hover:text-moss">{{ 'general.pagination.previous' | t }}</a>{%- endif -%}
+              <span class="font-mono text-xs text-stone">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+              {%- if paginate.next -%}<a href="{{ paginate.next.url }}" class="font-body text-sm text-forest underline underline-offset-4 hover:text-moss">{{ 'general.pagination.next' | t }}</a>{%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- else -%}
+          <p class="font-body text-sm text-bark">{{ 'customer.orders.none' | t }}</p>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+
+    <div>
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-display text-xl uppercase tracking-widest text-night">{{ 'customer.addresses.title' | t }}</h2>
+        <a href="{{ routes.account_addresses_url }}" class="font-body text-sm font-medium text-forest underline underline-offset-4 hover:text-moss transition-colors">{{ 'customer.addresses.add_new' | t }}</a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {%- for address in customer.addresses limit: 4 -%}
+          <div class="rounded-lg border border-stone/30 bg-white p-5 font-body text-sm text-bark">
+            {{ address | format_address }}
+          </div>
+        {%- else -%}
+          <p class="font-body text-sm text-bark">{{ 'customer.addresses.none' | t }}</p>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Account",
+  "settings": []
+}
+{% endschema %}

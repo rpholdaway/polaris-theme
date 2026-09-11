@@ -1,0 +1,53 @@
+{%- comment -%} sections/main-login.liquid {%- endcomment -%}
+<section class="min-h-[70vh] bg-snow px-4 py-16 flex items-center justify-center" data-section-id="{{ section.id }}" data-section-type="login">
+  <div class="max-w-md w-full rounded-2xl border border-stone/30 bg-white p-8 md:p-10" data-gsap="fade-up">
+    <h1 class="font-display text-2xl md:text-3xl uppercase tracking-widest text-night mb-8 text-center">{{ 'customer.login.title' | t }}</h1>
+
+    {%- form 'customer_login', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}
+        <div class="rounded-md bg-fire/10 border border-fire/30 px-4 py-3 mb-6" role="alert">
+          <ul class="font-body text-sm text-fire list-disc list-inside">
+            {%- for field in form.errors -%}
+              <li>{{ form.errors.messages[field] }}</li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <div class="mb-4">
+        <label for="CustomerEmail" class="block font-body text-xs uppercase tracking-widest text-stone mb-2">{{ 'customer.login.email' | t }}</label>
+        <input type="email" name="customer[email]" id="CustomerEmail" autocomplete="email" autocorrect="off" autocapitalize="off" required class="w-full rounded-md border border-stone/40 bg-white px-4 py-3 font-body text-sm text-night focus:outline-none focus:ring-2 focus:ring-forest">
+      </div>
+
+      <div id="CustomerPasswordWrapper" class="mb-2">
+        <label for="CustomerPassword" class="block font-body text-xs uppercase tracking-widest text-stone mb-2">{{ 'customer.login.password' | t }}</label>
+        <input type="password" name="customer[password]" id="CustomerPassword" autocomplete="current-password" class="w-full rounded-md border border-stone/40 bg-white px-4 py-3 font-body text-sm text-night focus:outline-none focus:ring-2 focus:ring-forest">
+      </div>
+
+      <div class="mb-6 text-right">
+        <a href="{{ routes.account_recover_url }}" class="font-body text-xs text-forest underline underline-offset-4 hover:text-moss">{{ 'customer.login.forgot_password' | t }}</a>
+      </div>
+
+      <button type="submit" class="w-full rounded-md bg-forest px-6 py-3 font-body text-sm font-medium text-snow transition-colors hover:bg-moss">{{ 'customer.login.sign_in' | t }}</button>
+    {%- endform -%}
+
+    <div class="mt-8 flex flex-col items-center gap-3 border-t border-stone/20 pt-6">
+      <p class="font-body text-sm text-bark">
+        {{ 'customer.login.create_account' | t }}
+        <a href="{{ routes.account_register_url }}" class="text-forest underline underline-offset-4 hover:text-moss">{{ 'customer.login.sign_up' | t }}</a>
+      </p>
+      {%- if shop.checkout.guest_login -%}
+        {%- form 'guest_login' -%}
+          <button type="submit" class="font-body text-xs text-bark underline underline-offset-4 hover:text-forest">{{ 'customer.login.guest_continue' | t }}</button>
+        {%- endform -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Login",
+  "settings": []
+}
+{% endschema %}

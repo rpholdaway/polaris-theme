@@ -1,0 +1,35 @@
+{%- comment -%} sections/main-page.liquid {%- endcomment -%}
+<section class="bg-snow px-4 py-16" data-section-id="{{ section.id }}" data-section-type="page">
+  <div class="{% if section.settings.layout == 'contained' %}max-w-3xl{% else %}max-w-6xl{% endif %} mx-auto">
+    {%- if section.settings.show_featured_image and page.metafields.custom.featured_image -%}
+      <div class="mb-10 overflow-hidden rounded-lg" data-gsap="fade-up">
+        {{ page.metafields.custom.featured_image.value | image_url: width: 1600 | image_tag: width: 1600, height: 800, class: 'w-full h-[36vh] md:h-[48vh] object-cover rounded-lg', loading: 'eager', widths: '750,1100,1600' }}
+      </div>
+    {%- endif -%}
+
+    <h1 class="font-display text-3xl md:text-5xl uppercase tracking-widest text-night mb-8 text-center">{{ page.title }}</h1>
+
+    <div class="prose prose-neutral max-w-none font-serif text-night prose-headings:font-display prose-headings:uppercase prose-headings:tracking-widest prose-a:text-forest {% if section.settings.layout == 'contained' %}mx-auto{% endif %}">
+      {{ page.content }}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout width",
+      "options": [
+        { "value": "contained", "label": "Contained" },
+        { "value": "full", "label": "Full width" }
+      ],
+      "default": "contained"
+    },
+    { "type": "checkbox", "id": "show_featured_image", "label": "Show featured image", "default": false }
+  ]
+}
+{% endschema %}

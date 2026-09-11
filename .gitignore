@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# Reference screenshots (large, not needed for theme)
+brigade-overland/screenshots/
+preview/screenshots/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Shopify
+.shopify/

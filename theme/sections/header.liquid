@@ -1,0 +1,275 @@
+{%- comment -%}
+  Header
+  Sticky masthead with logo, centered nav, utility icons, and a mobile
+  slide-out drawer for the menu.
+{%- endcomment -%}
+
+{%- liquid
+  assign logo = section.settings.logo
+  assign menu = section.settings.menu
+  assign show_search = section.settings.show_search
+  assign sticky = section.settings.enable_sticky
+  assign logo_width = section.settings.logo_width | default: 150
+  assign logo_style = 'max-width: ' | append: logo_width | append: 'px;'
+  assign header_alt = shop.name | escape
+-%}
+
+<header
+  class="w-full bg-white border-b border-slate/20{% if sticky %} sticky top-0 z-40{% endif %}"
+  data-header
+>
+  <div class="flex items-center justify-between px-4 md:px-8 max-w-[1440px] mx-auto h-20">
+    {%- comment -%} Left: logo (+ mobile hamburger) {%- endcomment -%}
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        class="md:hidden flex items-center justify-center w-10 h-10 -ml-2 text-night hover:text-earth transition active:scale-[0.97]"
+        aria-label="Open menu"
+        aria-controls="HeaderDrawer-{{ section.id }}"
+        aria-expanded="false"
+        data-drawer-open
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round" />
+        </svg>
+      </button>
+
+      <a href="{{ routes.root_url }}" class="flex items-center">
+        {%- if logo != blank -%}
+          {{ logo | image_url: width: 600 | image_tag: loading: 'eager', alt: header_alt, class: 'object-contain', style: logo_style }}
+        {%- else -%}
+          <span class="font-display text-2xl uppercase text-forest">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+    </div>
+
+    {%- comment -%} Center: primary nav (desktop only) {%- endcomment -%}
+    {%- if menu != blank -%}
+      <nav class="hidden md:block" aria-label="Primary">
+        <ul class="flex items-center gap-8">
+          {%- for link in menu.links -%}
+            <li>
+              <a
+                href="{{ link.url }}"
+                class="font-body text-sm font-medium uppercase tracking-wider text-night hover:text-earth transition{% if link.active %} text-earth{% endif %}"
+                {% if link.current %}aria-current="page"{% endif %}
+              >
+                {{ link.title | escape }}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+
+    {%- comment -%} Right: utility icons {%- endcomment -%}
+    <div class="flex items-center gap-2">
+      {%- if show_search -%}
+        <button
+          type="button"
+          class="flex items-center justify-center w-10 h-10 text-night hover:text-earth transition active:scale-[0.97]"
+          aria-label="Search"
+          aria-expanded="false"
+          data-search-toggle
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4.35-4.35" stroke-linecap="round" />
+          </svg>
+        </button>
+      {%- endif -%}
+
+      <a
+        href="{{ routes.account_url }}"
+        class="flex items-center justify-center w-10 h-10 text-night hover:text-earth transition active:scale-[0.97]"
+        aria-label="Account"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke-linecap="round" />
+        </svg>
+      </a>
+
+      <a
+        href="{{ routes.cart_url }}"
+        class="relative flex items-center justify-center w-10 h-10 text-night hover:text-earth transition active:scale-[0.97]"
+        aria-label="Cart, {{ cart.item_count }} items"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M6 7h12l-1 13a2 2 0 01-2 2H9a2 2 0 01-2-2L6 7z" stroke-linejoin="round" />
+          <path d="M9 7a3 3 0 016 0" stroke-linecap="round" />
+        </svg>
+        {%- if cart.item_count > 0 -%}
+          <span
+            class="absolute -top-1 -right-2 bg-earth text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center"
+            data-cart-count
+          >
+            {{ cart.item_count }}
+          </span>
+        {%- endif -%}
+      </a>
+    </div>
+  </div>
+
+  {%- comment -%} Predictive search dropdown {%- endcomment -%}
+    {%- if show_search -%}
+      <div class="border-b border-slate/20 hidden" data-search-bar>
+        <div class="max-w-[1440px] mx-auto px-4 md:px-8 py-4">
+          {%- render 'predictive-search' -%}
+        </div>
+      </div>
+    {%- endif -%}...
+  <div
+    class="fixed inset-0 bg-night/50 opacity-0 pointer-events-none transition-opacity duration-300 z-40 md:hidden"
+    data-drawer-overlay
+  ></div>
+
+  <div
+    id="HeaderDrawer-{{ section.id }}"
+    class="fixed inset-y-0 left-0 w-80 max-w-[85vw] bg-white -translate-x-full transition-transform duration-300 z-50 md:hidden flex flex-col"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Menu"
+    data-drawer
+  >
+    <div class="flex items-center justify-between px-6 py-5 border-b border-slate/20">
+      <span class="font-body text-xs font-semibold uppercase tracking-wider text-slate">Menu</span>
+      <button
+        type="button"
+        class="flex items-center justify-center w-10 h-10 -mr-2 text-night hover:text-earth transition active:scale-[0.97]"
+        aria-label="Close menu"
+        data-drawer-close
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+
+    {%- if menu != blank -%}
+      <nav class="flex-1 overflow-y-auto px-6 py-6" aria-label="Mobile">
+        <ul class="flex flex-col gap-1">
+          {%- for link in menu.links -%}
+            <li>
+              <a
+                href="{{ link.url }}"
+                class="block py-3 font-body text-base font-medium uppercase tracking-wider text-night hover:text-earth transition border-b border-slate/10"
+              >
+                {{ link.title | escape }}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+  </div>
+</header>
+
+<script>
+  (function () {
+    var root = document.getElementById('shopify-section-{{ section.id }}');
+    if (!root) return;
+
+    var openBtn = root.querySelector('[data-drawer-open]');
+    var closeBtn = root.querySelector('[data-drawer-close]');
+    var drawer = root.querySelector('[data-drawer]');
+    var overlay = root.querySelector('[data-drawer-overlay]');
+
+    function openDrawer() {
+      drawer.classList.remove('-translate-x-full');
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+      openBtn.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeDrawer() {
+      drawer.classList.add('-translate-x-full');
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+      openBtn.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    if (openBtn) openBtn.addEventListener('click', openDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    if (overlay) overlay.addEventListener('click', closeDrawer);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeDrawer();
+    });
+
+    {%- if show_search -%}
+    var searchToggle = root.querySelector('[data-search-toggle]');
+    var searchBar = root.querySelector('[data-search-bar]');
+    if (searchToggle && searchBar) {
+      searchToggle.addEventListener('click', function () {
+        var open = !searchBar.classList.contains('hidden');
+        searchBar.classList.toggle('hidden', open);
+        searchToggle.setAttribute('aria-expanded', !open);
+        if (!open) {
+          var input = searchBar.querySelector('input[type="search"]');
+          if (input) setTimeout(function () { input.focus(); }, 100);
+        }
+      });
+    }
+    {%- endif -%}
+
+    document.addEventListener('polaris:cart:updated', function (e) {
+      var badge = root.querySelector('[data-cart-count]');
+      var count = e.detail && e.detail.item_count;
+      if (!badge || typeof count !== 'number') return;
+      badge.textContent = count;
+      badge.classList.toggle('hidden', count === 0);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "default": 150
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky",
+      "label": "Sticky header",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search icon",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header",
+      "category": "Header"
+    }
+  ],
+  "enabled_on": {
+    "groups": ["header"]
+  }
+}
+{% endschema %}

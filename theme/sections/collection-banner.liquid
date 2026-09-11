@@ -1,0 +1,116 @@
+{%- comment -%}
+  Collection Hero Banner
+  Full-width banner for the top of a collection page: image or color background,
+  title, description, breadcrumbs, and a configurable overlay.
+{%- endcomment -%}
+
+{%- liquid
+  assign overlay_opacity = section.settings.overlay_opacity | default: 40
+  assign banner_image = section.settings.image | default: collection.image
+  assign height_class = 'min-h-[320px] md:min-h-[420px]'
+-%}
+
+<section
+  class="relative w-full {{ height_class }} flex items-end bg-forest overflow-hidden"
+  data-animate="collection-banner"
+>
+  {%- if banner_image -%}
+    <img
+      src="{{ banner_image | image_url: width: 2000 }}"
+      alt="{{ banner_image.alt | default: collection.title | escape }}"
+      class="absolute inset-0 w-full h-full object-cover"
+      loading="eager"
+      width="{{ banner_image.width }}"
+      height="{{ banner_image.height }}"
+      data-animate-target="collection-banner-image"
+    >
+    <div class="absolute inset-0 bg-night" style="opacity: {{ overlay_opacity | divided_by: 100.0 }};"></div>
+  {%- else -%}
+    <div class="absolute inset-0 bg-gradient-to-br from-forest to-night"></div>
+  {%- endif -%}
+
+  <div class="relative z-10 w-full px-4 md:px-8 lg:px-16 pb-8 md:pb-12">
+    <div class="max-w-[1440px] mx-auto">
+      {%- if section.settings.show_breadcrumbs -%}
+        <nav class="mb-4" aria-label="breadcrumbs" data-animate-target="collection-banner-breadcrumbs">
+          <ol class="flex flex-wrap items-center gap-2 text-xs md:text-sm text-wheat/80 font-body">
+            <li>
+              <a href="{{ routes.root_url }}" class="hover:text-snow transition-colors">{{ 'general.home_page' | t }}</a>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <a href="{{ routes.all_products_collection_url }}" class="hover:text-snow transition-colors">{{ 'general.shop' | t }}</a>
+            </li>
+            {%- if collection -%}
+              <li aria-hidden="true">/</li>
+              <li aria-current="page" class="text-snow">{{ collection.title }}</li>
+            {%- endif -%}
+          </ol>
+        </nav>
+      {%- endif -%}
+
+      <h1 class="font-display uppercase tracking-wide text-snow text-3xl md:text-5xl lg:text-6xl leading-tight" data-animate-target="collection-banner-title">
+        {{ collection.title | default: section.settings.fallback_title }}
+      </h1>
+
+      {%- if collection.description != blank or section.settings.description != blank -%}
+        <div class="mt-3 md:mt-4 max-w-2xl font-serif text-wheat text-sm md:text-base leading-relaxed" data-animate-target="collection-banner-description">
+          {%- if collection.description != blank -%}
+            {{ collection.description }}
+          {%- else -%}
+            <p>{{ section.settings.description }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection banner",
+  "tag": "section",
+  "class": "section-collection-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner image",
+      "info": "Falls back to the collection image if left blank"
+    },
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Fallback title",
+      "default": "Collection"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Fallback description",
+      "info": "Used when the collection has no description set"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection banner"
+    }
+  ]
+}
+{% endschema %}

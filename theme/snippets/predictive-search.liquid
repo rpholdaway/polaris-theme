@@ -1,0 +1,192 @@
+{%- comment -%}
+  Renders a predictive search form with a results dropdown.
+  Accepts:
+    - search_terms: {String} optional pre-filled search query
+{%- endcomment -%}
+
+<predictive-search class="predictive-search relative block w-full">
+  <form action="{{ routes.search_url }}" method="get" role="search" class="relative" data-predictive-search-form>
+    <input type="hidden" name="type" value="product">
+    <input
+      type="search"
+      name="q"
+      value="{{ search_terms | escape }}"
+      placeholder="Search..."
+      autocomplete="off"
+      autocorrect="off"
+      spellcheck="false"
+      class="w-full bg-white border border-slate/20 rounded-lg px-4 py-3 pr-12 text-body font-body focus:outline-none focus:border-forest focus:ring-1 focus:ring-forest"
+      aria-label="Search"
+      data-predictive-search-input
+    >
+    <button
+      type="submit"
+      class="absolute right-3 top-1/2 -translate-y-1/2 text-slate hover:text-night transition-colors"
+      aria-label="Submit search"
+    >
+      {%- render 'icon-svg', name: 'search' -%}
+    </button>
+
+    <div class="predictive-search__results absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl overflow-auto max-h-[60vh] z-50 hidden" data-predictive-search-results>
+      <div class="flex justify-center py-6 predictive-search__loading" data-predictive-search-loading hidden>
+        <svg class="animate-spin h-5 w-5 text-slate" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+      </div>
+
+      <div class="predictive-search__empty text-center py-6 text-slate text-sm" data-predictive-search-empty hidden>
+        No results found for "<span data-predictive-search-empty-term></span>"
+      </div>
+
+      <ul class="divide-y divide-sand/50" data-predictive-search-list>
+        {%- comment -%} Result rows are injected here via JS; markup below shows the expected shape {%- endcomment -%}
+      </ul>
+
+      <a href="{{ routes.search_url }}?q={{ search_terms | url_encode }}&type=product" class="block text-center py-3 text-forest font-medium text-sm hover:underline bg-snow/50" data-predictive-search-view-all>
+        View all results
+      </a>
+    </div>
+  </form>
+</predictive-search>
+
+{%- comment -%} Template used by JS to render each result row {%- endcomment -%}
+<template id="predictive-search-result-template">
+  <li class="flex items-center gap-4 p-3 hover:bg-snow transition-colors">
+    <a href="#" class="flex items-center gap-4 w-full" data-result-link>
+      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" width="48" height="48" class="w-12 aspect-square object-cover rounded" data-result-image loading="lazy">
+      <div class="flex-1">
+        <p class="text-sm font-medium text-night" data-result-title></p>
+        <p class="text-sm text-slate" data-result-price></p>
+      </div>
+    </a>
+  </li>
+</template>
+
+<style>
+  predictive-search {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+
+  .predictive-search__results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0.5rem;
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    overflow: auto;
+    max-height: 60vh;
+    z-index: 50;
+  }
+
+  .predictive-search__results[hidden] {
+    display: none;
+  }
+
+  input[data-predictive-search-input]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+</style>
+
+<script>
+  (function () {
+    if (customElements.get('predictive-search')) return;
+
+    const searchUrl = '{{ routes.search_url }}';
+
+    class PredictiveSearch extends HTMLElement {
+      constructor() {
+        super();
+        this.form = this.querySelector('[data-predictive-search-form]');
+        this.input = this.querySelector('[data-predictive-search-input]');
+        this.results = this.querySelector('[data-predictive-search-results]');
+        this.loading = this.querySelector('[data-predictive-search-loading]');
+        this.empty = this.querySelector('[data-predictive-search-empty]');
+        this.emptyTerm = this.querySelector('[data-predictive-search-empty-term]');
+        this.list = this.querySelector('[data-predictive-search-list]');
+        this.viewAll = this.querySelector('[data-predictive-search-view-all]');
+        this.template = document.getElementById('predictive-search-result-template');
+        this.abortController = null;
+        this.debounceTimer = null;
+
+        this.input.addEventListener('input', this.onInput.bind(this));
+        this.input.addEventListener('focus', this.onFocus.bind(this));
+        document.addEventListener('click', this.onDocumentClick.bind(this));
+      }
+
+      onFocus() {
+        if (this.list.children.length) {
+          this.results.hidden = false;
+        }
+      }
+
+      onDocumentClick(event) {
+        if (!this.contains(event.target)) {
+          this.results.hidden = true;
+        }
+      }
+
+      onInput(event) {
+        const query = event.target.value.trim();
+
+        clearTimeout(this.debounceTimer);
+
+        if (query.length < 2) {
+          this.results.hidden = true;
+          return;
+        }
+
+        this.debounceTimer = setTimeout(() => this.fetchResults(query), 300);
+      }
+
+      fetchResults(query) {
+        if (this.abortController) this.abortController.abort();
+        this.abortController = new AbortController();
+
+        this.results.hidden = false;
+        this.loading.hidden = false;
+        this.empty.hidden = true;
+        this.list.innerHTML = '';
+        this.viewAll.href = `${searchUrl}?q=${encodeURIComponent(query)}&type=product`;
+
+        fetch(`${window.Polaris.routes.predictive_search_url}?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=6&section_id=predictive-search`, {
+          signal: this.abortController.signal,
+        })
+          .then((response) => response.json())
+          .then((data) => this.renderResults(query, data))
+          .catch((error) => {
+            if (error.name !== 'AbortError') this.loading.hidden = true;
+          });
+      }
+
+      renderResults(query, data) {
+        this.loading.hidden = true;
+
+        const products = (data.resources && data.resources.results && data.resources.results.products) || [];
+
+        if (!products.length) {
+          this.emptyTerm.textContent = query;
+          this.empty.hidden = false;
+          return;
+        }
+
+        products.forEach((product) => {
+          const node = this.template.content.cloneNode(true);
+          node.querySelector('[data-result-link]').href = product.url;
+          node.querySelector('[data-result-image]').src = product.image || '';
+          node.querySelector('[data-result-image]').alt = product.title;
+          node.querySelector('[data-result-title]').textContent = product.title;
+          node.querySelector('[data-result-price]').textContent = product.price;
+          this.list.appendChild(node);
+        });
+      }
+    }
+
+    customElements.define('predictive-search', PredictiveSearch);
+  })();
+</script>

@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {}
+    },
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "hero": {
+      "type": "hero",
+      "disabled": false,
+      "settings": {
+        "layout": "overlay"
+      }
+    },
+    "category-grid": {
+      "type": "category-grid",
+      "blocks": {
+        "category-1": {
+          "type": "category",
+          "settings": {}
+        },
+        "category-2": {
+          "type": "category",
+          "settings": {}
+        },
+        "category-3": {
+          "type": "category",
+          "settings": {}
+        }
+      },
+      "block_order": ["category-1", "category-2", "category-3"],
+      "settings": {}
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "disabled": false,
+      "settings": {}
+    },
+    "brand-logos": {
+      "type": "brand-logos",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header",
+    "hero",
+    "category-grid",
+    "featured-collection",
+    "brand-logos",
+    "newsletter",
+    "footer"
+  ]
+}

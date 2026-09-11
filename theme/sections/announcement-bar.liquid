@@ -1,0 +1,141 @@
+{%- comment -%}
+  Announcement Bar
+  Full-width promotional bar. Colors are merchant-controlled, so the surface and
+  foreground are applied inline rather than through a Tailwind colour utility.
+{%- endcomment -%}
+
+{%- liquid
+  assign bar_text = section.settings.text
+  assign link_text = section.settings.link_text
+  assign link_url = section.settings.link_url
+  assign dismiss_key = bar_text | handle | truncate: 32, ''
+-%}
+
+{%- if bar_text != blank -%}
+  <div
+    class="relative w-full"
+    style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }};"
+    data-announcement-bar
+    data-dismiss-key="polaris:announcement:{{ section.id }}:{{ dismiss_key }}"
+  >
+    <div class="mx-auto flex max-w-container items-center justify-center px-10 py-2 text-center md:px-12">
+      <p class="text-body-sm tracking-[0.02em]">
+        {{ bar_text | escape }}
+        {%- if link_text != blank and link_url != blank -%}
+          <a
+            class="ml-2 font-medium underline underline-offset-4 transition-opacity duration-200 ease-polaris hover:opacity-70 active:opacity-50"
+            href="{{ link_url }}"
+          >
+            {{- link_text | escape -}}
+          </a>
+        {%- endif -%}
+      </p>
+    </div>
+
+    {%- if section.settings.show_close -%}
+      <button
+        type="button"
+        class="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-sm transition-opacity duration-200 ease-polaris hover:opacity-60 active:scale-[0.97]"
+        aria-label="Close announcement"
+        data-announcement-close
+      >
+        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false">
+          <path d="M5 5l10 10M15 5L5 15" stroke-linecap="round" />
+        </svg>
+      </button>
+    {%- endif -%}
+  </div>
+
+  <script>
+    (function () {
+      var bar = document.currentScript.previousElementSibling;
+      if (!bar || !bar.hasAttribute('data-announcement-bar')) return;
+
+      var key = bar.getAttribute('data-dismiss-key');
+      var inEditor = window.Shopify && window.Shopify.designMode;
+
+      function stored() {
+        try {
+          return window.localStorage.getItem(key);
+        } catch (e) {
+          return null;
+        }
+      }
+
+      if (!inEditor && stored() === 'dismissed') {
+        bar.remove();
+        return;
+      }
+
+      var close = bar.querySelector('[data-announcement-close]');
+      if (!close) return;
+
+      close.addEventListener('click', function () {
+        try {
+          window.localStorage.setItem(key, 'dismissed');
+        } catch (e) {
+          /* Private browsing: dismissal simply is not persisted. */
+        }
+        bar.remove();
+      });
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "tag": "aside",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Announcement text",
+      "default": "Free shipping on orders over $150"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_close",
+      "label": "Show close button",
+      "default": true,
+      "info": "Once dismissed the bar stays hidden for that visitor until the text changes."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement Bar",
+      "category": "Header"
+    }
+  ],
+  "enabled_on": {
+    "groups": ["header"]
+  }
+}
+{% endschema %}

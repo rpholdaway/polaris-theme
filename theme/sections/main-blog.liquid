@@ -1,0 +1,60 @@
+{%- comment -%} sections/main-blog.liquid {%- endcomment -%}
+<section class="bg-snow px-4 py-16" data-section-id="{{ section.id }}" data-section-type="blog">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+      <h1 class="font-display text-3xl md:text-5xl uppercase tracking-widest text-night">{{ blog.title }}</h1>
+
+      {%- if blog.all_tags.size > 0 -%}
+        <form method="get" action="{{ blog.url }}" class="flex flex-wrap items-center gap-2" data-tag-filter>
+          <label for="BlogTagFilter" class="sr-only">{{ 'blogs.article.tags' | t }}</label>
+          <select id="BlogTagFilter" name="tag" onchange="this.form.submit()" class="rounded-md border border-stone/40 bg-white px-4 py-2 font-body text-sm text-night focus:outline-none focus:ring-2 focus:ring-forest">
+            <option value="">{{ 'blogs.sidebar.all_topics' | t }}</option>
+            {%- for tag in blog.all_tags -%}
+              <option value="{{ tag | handleize }}" {% if current_tags contains tag %}selected{% endif %}>{{ tag }}</option>
+            {%- endfor -%}
+          </select>
+        </form>
+      {%- endif -%}
+    </div>
+
+    {%- paginate blog.articles by section.settings.articles_per_page -%}
+      {%- if blog.articles.size > 0 -%}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" data-gsap="stagger-fade">
+          {%- for article in blog.articles -%}
+            <article class="group" data-gsap-item>
+              <a href="{{ article.url }}" class="block">
+                <div class="relative aspect-[4/5] overflow-hidden rounded-lg bg-wheat">
+                  {%- if article.image -%}
+                    {{ article.image | image_url: width: 800 | image_tag: width: 800, height: 1000, class: 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-105', loading: 'lazy', widths: '400,600,800' }}
+                  {%- endif -%}
+                </div>
+                <p class="font-mono text-xs uppercase tracking-widest text-stone mt-4">{{ article.published_at | date: format: 'month_day_year' }}</p>
+                <h2 class="font-display text-lg uppercase tracking-wide text-night mt-2 group-hover:text-forest transition-colors">{{ article.title }}</h2>
+                <p class="font-body text-sm text-bark mt-2 line-clamp-2">{{ article.excerpt_or_content | strip_html | truncatewords: 24 }}</p>
+              </a>
+            </article>
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          <nav class="mt-14 flex items-center justify-center gap-4" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+            {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" class="font-body text-sm text-forest underline underline-offset-4 hover:text-moss">{{ 'general.pagination.previous' | t }}</a>{%- endif -%}
+            <span class="font-mono text-xs text-stone">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+            {%- if paginate.next -%}<a href="{{ paginate.next.url }}" class="font-body text-sm text-forest underline underline-offset-4 hover:text-moss">{{ 'general.pagination.next' | t }}</a>{%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- else -%}
+        <p class="font-body text-base text-bark">{{ 'blogs.article.no_articles' | t }}</p>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog Pages",
+  "settings": [
+    { "type": "range", "id": "articles_per_page", "label": "Articles per page", "min": 3, "max": 24, "step": 3, "default": 9 }
+  ]
+}
+{% endschema %}
